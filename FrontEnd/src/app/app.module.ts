@@ -1,4 +1,4 @@
-import { NgModule,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {AccordionModule} from 'primeng/accordion';
 import {MenubarModule} from 'primeng/menubar';
@@ -31,6 +31,7 @@ import {ToolbarModule} from 'primeng/toolbar';
 import {RatingModule} from 'primeng/rating';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -70,11 +71,10 @@ import { HomeComponent } from './home/home.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,
-    DropdownModule,ProgressBarModule,FileUploadModule,ToolbarModule,RatingModule,ConfirmationService,
-    MessageService,Dialog,DialogModule
+    DropdownModule,ProgressBarModule,FileUploadModule,ToolbarModule,RatingModule,DialogModule
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  providers: [],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA,NO_ERRORS_SCHEMA],
+  providers: [MessageService,ConfirmationService,Dialog],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
