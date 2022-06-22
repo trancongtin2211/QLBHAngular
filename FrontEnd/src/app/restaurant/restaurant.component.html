@@ -1,1 +1,193 @@
-<p>restaurant works!</p>
+<p-toast></p-toast>
+
+<div class="card">
+  <p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="Thêm nhà hàng" icon="pi pi-plus" class="p-button-success p-mr-2"
+        (click)="openNew()"></button>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+          placeholder="Tìm......." />
+      </span>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="restaurants" [row]="10" [globalFilterFields]="['name', 'description']"
+    [rowHover]="true" dataKey="id" [paginator]="false"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="name">
+          Tên <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="address">
+          Địa chỉ <p-sortIcon field="address"></p-sortIcon>
+        </th>
+        <th pSortableColumn="phone">
+          Số điện thoại <p-sortIcon field="phone"></p-sortIcon>
+        </th>
+        <th pSortableColumn="description">
+          Chú thích <p-sortIcon field="description"></p-sortIcon>
+        </th>
+        <th pSortableColumn="created">
+          Ngày tạo <p-sortIcon field="created"></p-sortIcon>
+        </th>
+        <th pSortableColumn="updated">
+          Ngày chính <p-sortIcon field="updated"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-restaurant>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="restaurant"></p-tableCheckbox>
+        </td>
+        <td>
+          {{ restaurant.name }}
+        </td>
+        <td>
+          {{ restaurant.address }}
+        </td>
+        <td>
+          {{ restaurant.phone }}
+        </td>
+        <td>
+          {{ restaurant.description }}
+        </td>
+        <td>
+          {{ restaurant.created | date: "dd/MM/yyyy" }}
+        </td>
+        <td>
+          {{ restaurant.updated | date: "dd/MM/yyyy" }}
+        </td>
+        <td>
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editRestaurant(restaurant)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteRestaurant(restaurant)"></button>
+      </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        In total there are
+        {{ restaurants ? restaurants.length : 0 }} restaurants.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="restaurantDialog" [style]="{ width: '450px' }" header="Restaurant Details" [modal]="true"
+  styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="p-field">
+      <label for="name">Name</label>
+      <input type="text" pInputText id="name" [(ngModel)]="restaurant.name" required autofocus />
+      <small class="p-invalid" *ngIf="submitted && !restaurant.name">
+        Name is required.
+      </small>
+    </div>
+    <div class="p-field">
+      <label for="address">Address</label>
+      <input type="text" pInputText id="address" [(ngModel)]="restaurant.address" required autofocus />
+    </div>
+    <div class="p-field">
+      <label for="phone">Phone</label>
+      <input type="text" pInputText id="phone" [(ngModel)]="restaurant.phone" required autofocus />
+    </div>
+    <div class="p-field">
+      <label for="description">Description</label>
+      <textarea type="text" pInputTextarea id="description" [(ngModel)]="restaurant.description" required autofocus
+        rows="3" cols="20">
+      </textarea>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveRestaurant()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+
+<!-- <div>
+  {{restaurant.name }}
+  {{restaurant.address}}
+</div> -->
+
+<!-- <div class="container">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <div class="card">
+        <h1>Users</h1>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Địa chỉ</th>
+              <th scope="col">Số điện thoại</th>
+              <th scope="col">Chú thích</th>
+              <th scope="col">Ngày tạo</th>
+              <th scope="col">Ngày chính</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of restaurants">
+              <td>{{ user.name }}</td>
+              <td>{{ user.address }}</td>
+              <td>{{ user.phone }}</td>
+              <td>{{ user.description }}</td>
+              <td>{{ user.created }}</td>
+              <td>{{ user.updated }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="card">
+<p-table #dt [value]="restaurants" [row]="10"  [globalFilterFields]="['name', 'description']"
+[rowHover]="true" dataKey="id">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Name</th>
+      <th>Địa chỉ</th>
+      <th>Số Điện thoại</th>
+      <th>Chú thích</th>
+      <th>Ngày tạo</th>
+      <th>Ngày chính</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-restaurant>
+    <tr>
+      <td>{{restaurant.name}}</td>
+      <td>{{restaurant.address}}</td>
+      <td>{{restaurant.phone}}</td>
+      <td>{{restaurant.description}}</td>
+      <td>{{restaurant.created | date: "dd/MM/yyyy"}}</td>
+      <td>{{restaurant.updated | date: "dd/MM/yyyy"}}</td>
+      <td>
+        <button>
+          pButton pRipple icon="pi pi-pencil" class="p-button-rounded
+          p-button-success p-mr-2" (click)="editRestaurant(restaurant)"
+        </button>
+        <button>
+          pButton pRipple icon="pi pi-pencil" class="p-button-rounded
+          p-button-warning" (click)="deleteRestaurant(restaurant)"
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+</div> -->
